@@ -6,6 +6,7 @@ import cors from "cors";
 
 // rutas
 import userRoutes from "./routes/user.routes.js";
+import postRoutes from "./routes/post.routes.js";
 
 // variables de entorno
 dotenv.config();
@@ -32,6 +33,9 @@ mongoose
 
 // rutas de login. Registro, login etc
 app.use("/api", userRoutes);
+
+// rutas de posts
+app.use("/api", postRoutes);
 
 // ====== servidor ======
 

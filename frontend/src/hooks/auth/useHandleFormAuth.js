@@ -93,12 +93,14 @@ export const useHandleFormAuth = ({ isRegister }) => {
       }
 
       // si todo salio bien, logueamos al usuario y limpiamos el formulario
+      localStorage.setItem("token", data.data.token);
+      window.location.href = "/";
       const formatName =
         data.data.user.displayName.charAt(0).toUpperCase() +
         data.data.user.displayName.slice(1);
 
       handleClearForm();
-      showToast(`Bienvenido ${formatName}`, "👏");
+      showToast(`Bienvenido ${formatName}`, "👋");
     } catch (error) {
       //   console.log(error);
       //   console.log(error.message);

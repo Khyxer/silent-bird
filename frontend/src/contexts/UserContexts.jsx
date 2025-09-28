@@ -63,7 +63,7 @@ export const UserProvider = ({ children }) => {
     setUserData(null);
     setUserAuthenticated(false);
     setError(null);
-    window.location.href = "/auth";
+    // window.location.href = "/auth";
   };
 
   const updateUserData = (newData) => {

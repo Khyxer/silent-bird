@@ -9,8 +9,8 @@ import mongoose from "mongoose";
  *  - likes: likes del post
  *  - dislikes: dislikes del post
  *  - taggedUsers: usuarios etiquetados en el post
- *  - hashtags: hashtags usados en el post
- *  - commentsCount: cantidad de comentarios del post
+ *  - hashtags: hashtags usados en el post -- falta crear el modelo
+ *  - comments: comentarios del post
  */
 const postSchema = new mongoose.Schema(
   {
@@ -23,7 +23,7 @@ const postSchema = new mongoose.Schema(
       type: String,
       trim: true,
       minlength: [1, "El contenido debe tener al menos 1 caracter"],
-      maxlength: [280, "El contenido no puede tener más de 280 caracteres"],
+      maxlength: [2000, "El contenido no puede tener más de 2000 caracteres"],
     },
     images: [String],
     likes: [
@@ -44,11 +44,18 @@ const postSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    hashtags: [String],
-    commentsCount: {
-      type: Number,
-      default: 0,
-    },
+    hashtags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Hashtag",
+      },
+    ],
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
   },
   {
     timestamps: true,

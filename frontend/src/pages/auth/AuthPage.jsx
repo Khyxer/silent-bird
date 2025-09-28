@@ -21,14 +21,14 @@ export const AuthPage = () => {
       <div className="absolute bottom-0 w-full h-full animate-pulse flex justify-between pointer-events-none opacity-40">
         <div className="flex items-start p-12">
           <img
-            src="https://www.pngkey.com/png/full/110-1102600_the-moon-is-a-cheese-ball-moon-drawing.png"
+            src="/moon.webp"
             alt=""
             className="h-[25%] object-contain"
           />
         </div>
         <div className="flex items-end justify-end mr-12">
           <img
-            src="https://www.pngkey.com/png/full/100-1008632_white-tree-silhouette-png.png"
+            src="/tree.webp"
             alt=""
             className="h-[75%] object-contain"
           />

@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast";
 
-export const showToast = (message, icon = "👏") => {
+export const showToast = (message, icon = "✅") => {
   toast(message, {
     icon,
     style: {

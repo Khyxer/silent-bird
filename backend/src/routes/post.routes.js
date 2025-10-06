@@ -12,7 +12,7 @@ const router = Router();
 router.post("/post/create", authenticateToken, createPostController);
 
 // GET: Obtener posts
-router.get("/posts/all", getPostsController);
+router.get("/posts", getPostsController);
 
 // LIKE: Dar o quitar like a un post
 router.post("/post/like", authenticateToken, likePostController);

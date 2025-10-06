@@ -1,9 +1,13 @@
 import React from "react";
 import { ButtonBase } from "@/UI/UiButtons";
 import { Settings, Verified } from "lucide-react";
+import { HeroProfileUserLoader } from "@/components/loaders/user/HeroProfileUserLoader";
 
-export const HeroProfileUser = ({ profileUser, currentUser }) => {
+export const HeroProfileUser = ({ profileUser, currentUser, loadingUser }) => {
   //   console.log(profileUser);
+  if (!loadingUser) {
+    return <HeroProfileUserLoader />;
+  }
   return (
     //contenedor principal
     <main className="border border-gray-color/50 rounded-lg overflow-hidden">

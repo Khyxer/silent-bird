@@ -11,7 +11,7 @@ import { formatUserDisplayName } from "@/utils/formatsFunctions";
 
 export const UserProfilePage = () => {
   const { userData } = useUser(); // Datos del usuario actual
-  const { getUserProfile, profileUser, loading } = useGetProfileUser(); // Hook para obtener el perfil del usuario
+  const { getUserProfile, profileUser, loading:loadingUser } = useGetProfileUser(); // Hook para obtener el perfil del usuario
   const { dataPosts, fetchPosts, loading: loadingPosts } = useGetPosts(); // Hook para obtener los posts del usuario
   const userName = useParams().userName; // Nombre de usuario de la URL
   const currentUser = userData?.username === userName; // Verificar si el usuario actual es el mismo que el de la URL
@@ -23,7 +23,7 @@ export const UserProfilePage = () => {
     fetchPosts(userName);
   }, [userName]);
 
-  if (loading || loadingPosts) {
+  if (loadingUser || loadingPosts) {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <Loader2 size={40} className="animate-spin text-gray-color" />
@@ -31,14 +31,14 @@ export const UserProfilePage = () => {
     );
   }
 
-  if (!profileUser && !loading) {
+  if (!profileUser && !loadingUser) {
     return <UserNotFound />;
   }
 
   return (
     <main className="flex flex-col gap-6">
       {/* encabezado con el banner del usuario, avatar, nombre, usuario y boton de seguir */}
-      <HeroProfileUser profileUser={profileUser} currentUser={currentUser} />
+      <HeroProfileUser profileUser={profileUser} currentUser={currentUser} loadingUser={loadingUser} />
 
       {/* mostrar los posts del usuario */}
       {dataPosts?.length > 0 ? (

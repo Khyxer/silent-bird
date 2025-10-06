@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { House, File, TrendingUp } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const NavMenuMainPage = ({ navMenu }) => {
   const refBg = useRef(null);
@@ -30,8 +30,8 @@ export const NavMenuMainPage = ({ navMenu }) => {
       ></div>
       {navMenu.map((item) => (
         <li key={item.label} className="z-20 relative ">
-          <a
-            href={item.href}
+          <Link
+            to={item.link}
             // className={`flex items-center gap-2 px-4 py-2 h-10 transition-colors duration-200 hover:text-white`}
             className="group inline-flex h-10 gap-2 w-max items-center justify-center rounded-md px-4 font-medium hover:text-light-color text-gray-color duration-200"
             onMouseEnter={handleMouseEnter}
@@ -39,7 +39,7 @@ export const NavMenuMainPage = ({ navMenu }) => {
           >
             <item.icon size={17} />
             <p>{item.label}</p>
-          </a>
+          </Link>
         </li>
       ))}
     </ul>

@@ -4,6 +4,7 @@ import { MainPageLayout } from "./layouts/MainPageLayout";
 import { MainPage } from "./pages/main/MainPage";
 import { Toaster } from "react-hot-toast";
 import { UserProvider } from "./contexts/UserContexts";
+import { UserProfilePage } from "./pages/user/UserProfilePage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           {/* Rutas principales */}
           <Route path="/" element={<MainPageLayout />}>
             <Route index element={<MainPage />} />
+            <Route path="user/:userName" element={<UserProfilePage />} />
           </Route>
 
           {/* Protected Routes */}

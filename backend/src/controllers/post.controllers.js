@@ -1,4 +1,5 @@
 import Post from "../models/post.model.js";
+import User from "../models/user.model.js";
 
 //crar post
 export const createPostController = async (req, res) => {
@@ -43,16 +44,51 @@ export const createPostController = async (req, res) => {
 //obtener posts
 export const getPostsController = async (req, res) => {
   try {
-    const posts = await Post.find()
-      .populate({
-        path: "userId",
-        match: { banned: { $ne: true } },
-        select: "-password",
-      })
-      .sort({ createdAt: -1 });
-    res
-      .status(200)
-      .json({ success: true, message: "Posts obtenidos exitosamente", posts });
+    //obtener username de la query
+    const { username } = req.query;
+
+    let posts;
+
+    if (username) {
+      // si hay un username, buscar ese usario en la base de datos y obtener su ID
+      const user = await User.findOne({
+        username: username,
+        banned: { $ne: true },
+      });
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: `Usuario '${username}' no encontrado o está baneado`,
+          posts: [],
+        });
+      }
+
+      // si el usuario existe, buscar sus posts por el ID
+      posts = await Post.find({ userId: user._id })
+        .populate({
+          path: "userId",
+          select: "-password",
+        })
+        .sort({ createdAt: -1 });
+    } else {
+      // si no hay username entonces se necesita buscar todos los posts de usuarios no baneados
+      posts = await Post.find()
+        .populate({
+          path: "userId",
+          match: { banned: { $ne: true } },
+          select: "-password",
+        })
+        .sort({ createdAt: -1 });
+
+      posts = posts.filter((post) => post.userId !== null);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Posts obtenidos exitosamente",
+      posts,
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -84,22 +120,18 @@ export const likePostController = async (req, res) => {
 
     if (post.likes.includes(userId)) {
       post.likes.pull(userId);
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Like quitado exitosamente",
-          state: "removeLike",
-        });
+      res.status(200).json({
+        success: true,
+        message: "Like quitado exitosamente",
+        state: "removeLike",
+      });
     } else {
       post.likes.push(userId);
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Like agregado exitosamente",
-          state: "addLike",
-        });
+      res.status(200).json({
+        success: true,
+        message: "Like agregado exitosamente",
+        state: "addLike",
+      });
     }
 
     await post.save();

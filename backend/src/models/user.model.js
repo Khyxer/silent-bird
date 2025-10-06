@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken";
 /*
  * === Modelo de usuario ===
  *  Campos:
- *  - username: nombre de usuario, con el que inician sesión y buscan a otros usuarios (único, mínimo 3 caracteres, máximo 14)
- *  - displayName: nombre visual, el que se mostrara en el perfil y se podrá editar facilmente (mínimo 1 caracter, máximo 16)
+ *  - username: nombre de usuario, con el que inician sesión y buscan a otros usuarios (único, mínimo 3 caracteres, máximo 20)
+ *  - displayName: nombre visual, el que se mostrara en el perfil y se podrá editar facilmente (mínimo 1 caracter, máximo 26)
  *  - password: contraseña de la cuenta (requerida)
  *  - avatarUrl: URL del avatar (opcional, por defecto: icono por defecto)
  *  - bannerUrl: URL del banner (opcional, por defecto: NULL)
@@ -23,14 +23,14 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       minlength: [3, "El usuario debe tener al menos 3 caracteres"],
-      maxlength: [14, "El usuario no puede tener más de 14 caracteres"],
+      maxlength: [20, "El usuario no puede tener más de 20 caracteres"],
     },
     displayName: {
       type: String,
       trim: true,
       lowercase: true,
       minlength: [1, "El nombre debe tener al menos 1 caracter"],
-      maxlength: [16, "El nombre no puede tener más de 16 caracteres"],
+      maxlength: [26, "El nombre no puede tener más de 26 caracteres"],
     },
     password: {
       type: String,
@@ -38,8 +38,7 @@ const userSchema = new mongoose.Schema(
     },
     avatarUrl: {
       type: String,
-      default:
-        "https://icdpelena.com.ar/wp-content/uploads/2024/10/Iconos-1-300x300.png",
+      default: "https://i.ibb.co/RpCVFbtX/default-avatar-user.webp",
     },
     bannerUrl: {
       type: String,

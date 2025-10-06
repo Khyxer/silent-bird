@@ -19,6 +19,15 @@ export const registerUserController = async (req, res) => {
       });
     }
 
+    // validar caracteres permitidos
+    if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "El nombre de usuario solo puede tener letras, números, guiones y guiones bajos.",
+      });
+    }
+
     // usuario en uso
     const userExist = await User.findOne({ username });
     if (userExist) {
@@ -138,7 +147,6 @@ export const loginUserController = async (req, res) => {
     });
   }
 };
-
 
 //obtener datos del usuario autenticado verificando su JWT
 export const getProfileController = async (req, res) => {

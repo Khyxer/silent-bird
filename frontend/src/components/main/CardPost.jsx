@@ -11,6 +11,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 import { useHandleActionsPost } from "@/hooks/post/useHandleActionsPost";
+import { Link } from "react-router-dom";
 
 export const CardPost = ({ post }) => {
   const { userData } = useUser();
@@ -26,7 +27,7 @@ export const CardPost = ({ post }) => {
       key={post._id}
     >
       <header className="flex justify-between items-center p-4 pl-3 pb-0">
-        <div className="flex gap-3 cursor-pointer group">
+        <Link to={`/user/${post.userId.username}`} className="flex gap-3 cursor-pointer group">
           <img
             src={post.userId.avatarUrl}
             alt={post.userId.displayName}
@@ -50,7 +51,7 @@ export const CardPost = ({ post }) => {
               <span className="select-none">{timeAgo(post.createdAt)}</span>
             </div>
           </div>
-        </div>
+        </Link>
 
         <button className="p-2 hover:bg-gray-color/10 rounded-lg cursor-pointer">
           <Ellipsis size={19} />

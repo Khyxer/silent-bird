@@ -7,6 +7,8 @@ export const showToast = (message, icon = "✅") => {
       borderRadius: "999px",
       background: "#333",
       color: "#fff",
+      maxWidth: "500px",
+      textAlign: "center",
     },
   });
 };
@@ -18,6 +20,8 @@ export const showErrorToast = (message, icon = "⚠️") => {
       borderRadius: "999px",
       background: "#333",
       color: "#fff",
+      maxWidth: "500px",
+      textAlign: "center",
     },
   });
 };
@@ -29,6 +33,8 @@ export const showWarningToast = (message, icon = "⚠️") => {
       borderRadius: "999px",
       background: "#604500",
       color: "#fff",
+      maxWidth: "500px",
+      textAlign: "center",
     },
   });
 };
@@ -40,6 +46,8 @@ export const showCriticalErrorToast = (message, icon = "⚠️") => {
       borderRadius: "999px",
       background: "#ff000080",
       color: "#fff",
+      maxWidth: "500px",
+      textAlign: "center",
     },
   });
 };

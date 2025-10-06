@@ -4,6 +4,7 @@ import { ButtonBase } from "@/UI/UiButtons";
 import { Link } from "react-router-dom";
 import { usePostForm } from "@/hooks/post/usePostForm";
 import { showToast } from "@/utils/toastConfig";
+import { formatUserDisplayName } from "@/utils/formatsFunctions";
 
 export const NewPost = ({ userAuthenticated, userData }) => {
   const {
@@ -40,7 +41,9 @@ export const NewPost = ({ userAuthenticated, userData }) => {
               value={text}
               onChange={handleTextChange}
               className="p-4 w-full resize-none outline-none border-none custom-scroll pb-8"
-              placeholder="¿Qué estás pensando?"
+              placeholder={`¿Qué estás pensando ${formatUserDisplayName(
+                userData?.username
+              )}?`}
               style={{
                 minHeight: `${minHeight}px`,
                 maxHeight: `${maxHeight}px`,
@@ -83,7 +86,7 @@ export const NewPost = ({ userAuthenticated, userData }) => {
       ) : (
         <div className="flex flex-col items-center py-6">
           <h5 className="text-center text-2xl font-semibold mb-7">
-            ¡Inicia sesión para compartir tus pensamientos con los demas!
+            ¡Inicia sesión para compartir tus ideas y opiniones con los demas!
           </h5>
           <div className="flex flex-col items-center gap-1">
             <Link to="/auth">

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 
-import { useGetAllPosts } from "@/hooks/post/useGetAllPosts";
+import { useGetPosts } from "@/hooks/post/useGetPosts";
 import { CardPost } from "./CardPost";
 import { Loader2 } from "lucide-react";
 
 export const ShowPosts = () => {
-  const { dataPosts, fetchPosts, loading } = useGetAllPosts();
+  const { dataPosts, fetchPosts, loading } = useGetPosts();
 
   useEffect(() => {
     fetchPosts();

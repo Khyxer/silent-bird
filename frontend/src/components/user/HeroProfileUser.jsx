@@ -5,8 +5,11 @@ import { Settings, Verified } from "lucide-react";
 export const HeroProfileUser = ({ profileUser, currentUser }) => {
   //   console.log(profileUser);
   return (
+    //contenedor principal
     <main className="border border-gray-color/50 rounded-lg overflow-hidden">
+      {/* Encabezado con banner y avatar */}
       <header className="w-full h-[240px] relative">
+        {/* Fondo del banner */}
         <div className="w-full h-full opacity-80 absolute top-0 left-0 -z-10">
           {profileUser?.bannerUrl === "NULL" ? (
             <div className="w-full h-full bg-gray-color/20 mask-b-from-0" />
@@ -19,6 +22,7 @@ export const HeroProfileUser = ({ profileUser, currentUser }) => {
           )}
         </div>
 
+        {/* Avatar del usuario */}
         <div className="p-6 mx-auto h-full flex items-end">
           <img
             src={profileUser?.avatarUrl}
@@ -27,17 +31,23 @@ export const HeroProfileUser = ({ profileUser, currentUser }) => {
           />
         </div>
       </header>
+      {/* Contenido del perfil con nombre, usuario y botones */}
       <footer className="p-6">
         <div className="flex items-center justify-between">
+          {/* Información del usuario como nombre, usuario y verificado */}
           <div>
             <div className="flex items-center gap-2">
               <h1 className="font-bold text-2xl">{profileUser?.displayName}</h1>
-              <p className=" text-lg text-sky-500">
+              <span className=" text-lg text-sky-500">
                 {profileUser?.verified ? <Verified size={27} /> : ""}
+              </span>
+              <p className="text-gray-color text-sm">
+                {currentUser ? " (Tú)" : ""}
               </p>
             </div>
             <p className="text-gray-color text-lg">@{profileUser?.username}</p>
           </div>
+          {/* Botones de seguir y editar perfil si es el usuario actual */}
           {currentUser ? (
             <div className="flex items-center gap-2">
               <ButtonBase text="Editar Perfil" className="!w-fit px-5" />

@@ -5,21 +5,25 @@ import { HeroProfileUser } from "@/components/user/HeroProfileUser";
 import { useUser } from "@/contexts/UserContexts";
 import { UserNotFound } from "@/components/user/UserNotFound";
 import { Loader2 } from "lucide-react";
+import { useGetPosts } from "@/hooks/post/useGetPosts";
+import { CardPost } from "@/components/main/CardPost";
+import { formatUserDisplayName } from "@/utils/formatsFunctions";
 
 export const UserProfilePage = () => {
-  const userName = useParams().userName;
+  const { userData } = useUser(); // Datos del usuario actual
+  const { getUserProfile, profileUser, loading } = useGetProfileUser(); // Hook para obtener el perfil del usuario
+  const { dataPosts, fetchPosts, loading: loadingPosts } = useGetPosts(); // Hook para obtener los posts del usuario
+  const userName = useParams().userName; // Nombre de usuario de la URL
+  const currentUser = userData?.username === userName; // Verificar si el usuario actual es el mismo que el de la URL
 
-  const { userData } = useUser();
-
-  const currentUser = userData?.username === userName;
-
-  const { getUserProfile, profileUser, loading } = useGetProfileUser();
-
+  const formatDisplayName = formatUserDisplayName(userName);
+  // useEffect para obtener el perfil y los posts del usuario
   useEffect(() => {
     getUserProfile(userName);
+    fetchPosts(userName);
   }, [userName]);
 
-  if (loading) {
+  if (loading || loadingPosts) {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <Loader2 size={40} className="animate-spin text-gray-color" />
@@ -32,8 +36,22 @@ export const UserProfilePage = () => {
   }
 
   return (
-    <main>
+    <main className="flex flex-col gap-6">
+      {/* encabezado con el banner del usuario, avatar, nombre, usuario y boton de seguir */}
       <HeroProfileUser profileUser={profileUser} currentUser={currentUser} />
+
+      {/* mostrar los posts del usuario */}
+      {dataPosts?.length > 0 ? (
+        dataPosts?.map((post) => <CardPost post={post} key={post._id} />)
+      ) : (
+        <p className="text-center text-lg text-gray-color">
+          ¡Hola{" "}
+          <span className="font-semibold text-light-color">
+            {formatDisplayName}
+          </span>
+          , aquí comienza tu historia! <br /> Publica algo para ver tus posts.
+        </p>
+      )}
     </main>
   );
 };

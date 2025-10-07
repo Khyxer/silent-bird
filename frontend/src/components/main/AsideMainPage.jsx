@@ -118,14 +118,14 @@ export const AsideMainPage = ({
             </div>
           </Link>
           <div className="ml-auto gap-2 flex items-center">
-            <button className="border border-transparent hover:border-light-color rounded-full p-2 cursor-pointer duration-200 ">
-              <Settings className="hover:text-light-color text-gray-color duration-200" />
+            <button className="border border-transparent hover:border-light-color rounded-full p-2 cursor-pointer duration-200 group">
+              <Settings className="hover:text-light-color text-gray-color duration-200 group-hover:text-light-color" />
             </button>
             <button
               onClick={() => handleLogOut()}
-              className="border border-transparent hover:border-light-color rounded-full p-2 cursor-pointer duration-200 "
+              className="border border-transparent hover:border-light-color rounded-full p-2 cursor-pointer duration-200 group"
             >
-              <LogOutIcon className="hover:text-light-color text-gray-color duration-200" />
+              <LogOutIcon className="hover:text-light-color text-gray-color duration-200 group-hover:text-light-color" />
             </button>
           </div>
         </footer>

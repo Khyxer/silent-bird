@@ -5,7 +5,7 @@ import { HeroProfileUserLoader } from "@/components/loaders/user/HeroProfileUser
 
 export const HeroProfileUser = ({ profileUser, currentUser, loadingUser }) => {
   //   console.log(profileUser);
-  if (!loadingUser) {
+  if (loadingUser) {
     return <HeroProfileUserLoader />;
   }
   return (

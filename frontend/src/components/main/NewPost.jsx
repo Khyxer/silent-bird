@@ -1,12 +1,13 @@
 import React from "react";
-import { Image, Send, AtSign, Hash, Loader2 } from "lucide-react";
 import { ButtonBase } from "@/UI/UiButtons";
 import { Link } from "react-router-dom";
 import { usePostForm } from "@/hooks/post/usePostForm";
 import { showToast } from "@/utils/toastConfig";
 import { formatUserDisplayName } from "@/utils/formatsFunctions";
+import { ButtonsNewPost } from "./ButtonsNewPost";
 
 export const NewPost = ({ userAuthenticated, userData }) => {
+  // hooks
   const {
     text,
     textareaRef,
@@ -33,8 +34,9 @@ export const NewPost = ({ userAuthenticated, userData }) => {
           <div className="flex items-center pl-4">
             <img
               src={userData?.avatarUrl}
-              alt=""
-              className="w-11 h-11 object-cover rounded-full mb-auto mt-4"
+              alt={userData?.displayName}
+              className="w-11 h-11 object-cover rounded-full mb-auto mt-4 user-select-none"
+              draggable={false}
             />
             <textarea
               ref={textareaRef}
@@ -51,37 +53,18 @@ export const NewPost = ({ userAuthenticated, userData }) => {
               }}
             />
           </div>
-          <div className="p-3 pt-0 flex justify-between items-center">
-            <div className="flex">
-              <button className="p-1 cursor-pointer text-gray-color/80 hover:text-light-color duration-150">
-                <Image size={20} />
-              </button>
-              <button className="p-1 cursor-pointer text-gray-color/80 hover:text-light-color duration-150">
-                <AtSign size={20} />
-              </button>
-              <button className="p-1 cursor-pointer text-gray-color/80 hover:text-light-color duration-150">
-                <Hash size={20} />
-              </button>
-            </div>
-            <div className="flex items-center">
-              <span
-                style={{ color: textLength > 2000 ? "red" : "" }}
-                className="text-gray-color/80 text-xs mr-2"
-              >
-                {textLength}/2000
-              </span>
-              <button
-                className="p-1 cursor-pointer text-gray-color/80 hover:text-light-color duration-150"
-                onClick={handleSubmit}
-              >
-                {loading ? (
-                  <Loader2 className="animate-spin" size={20} />
-                ) : (
-                  <Send size={20} />
-                )}
-              </button>
-            </div>
-          </div>
+
+          {/** botones de acciones
+           * enviar post
+           * agregar imagenes
+           * agregar hashtags
+           * agregar usuarios
+           */}
+          <ButtonsNewPost
+            textLength={textLength}
+            loading={loading}
+            handleSubmit={handleSubmit}
+          />
         </div>
       ) : (
         <div className="flex flex-col items-center py-6">

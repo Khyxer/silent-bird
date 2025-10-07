@@ -6,12 +6,14 @@ export const usePostForm = () => {
   const [loading, setLoading] = useState(false);
   const textareaRef = useRef(null);
 
+  // longitud del texto
   const [textLength, setTextLength] = useState(0);
 
+  // alturas del textarea
   const minHeight = 60;
   const maxHeight = 200;
 
-  // Estado del post
+  // datos del post
   const [postData, setPostData] = useState({
     content: "",
     images: [],
@@ -19,11 +21,12 @@ export const usePostForm = () => {
     hashtags: [],
   });
 
-  // Actualizar postData cuando cambie el texto
+  // actualizar postData cuando cambie el texto
   useEffect(() => {
     setPostData((prev) => ({ ...prev, content: text }));
   }, [text]);
 
+  // ajustar altura del textarea
   const adjustTextareaHeight = () => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -40,15 +43,18 @@ export const usePostForm = () => {
     }
   };
 
+  // ajustar altura del textarea
   useEffect(() => {
     adjustTextareaHeight();
   }, [text]);
 
+  // manejar cambios en el textarea
   const handleTextChange = (e) => {
     setText(e.target.value);
     setTextLength(e.target.value.length);
   };
 
+  // limpiar/resetear el formulario
   const resetForm = () => {
     setText("");
     setTextLength(0);
@@ -60,6 +66,7 @@ export const usePostForm = () => {
     });
   };
 
+  // enviar datos al formulario y crear el post
   const createPost = async () => {
     setLoading(true);
     try {
@@ -90,18 +97,18 @@ export const usePostForm = () => {
   };
 
   return {
-    // Estado del texto y textarea
+    // estado del texto y textarea
     text,
     textareaRef,
     handleTextChange,
     minHeight,
     maxHeight,
 
-    // Estado del post
+    // estado del post
     postData,
     setPostData,
 
-    // Funciones
+    // funciones
     createPost,
     resetForm,
     loading,

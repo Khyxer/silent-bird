@@ -1,7 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { showToast } from "@/utils/toastConfig";
+import { useNewPostContext } from "@/contexts/post/useNewPostsContext";
 
 export const usePostForm = () => {
+  //formulario del context
+  const { formNewPostData, setFormNewPostData } = useNewPostContext();
+
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const textareaRef = useRef(null);
@@ -13,17 +17,10 @@ export const usePostForm = () => {
   const minHeight = 60;
   const maxHeight = 200;
 
-  // datos del post
-  const [postData, setPostData] = useState({
-    content: "",
-    images: [],
-    taggedUsers: [],
-    hashtags: [],
-  });
-
   // actualizar postData cuando cambie el texto
   useEffect(() => {
-    setPostData((prev) => ({ ...prev, content: text }));
+    setFormNewPostData((prev) => ({ ...prev, content: text }));
+    console.log(formNewPostData);
   }, [text]);
 
   // ajustar altura del textarea
@@ -58,7 +55,7 @@ export const usePostForm = () => {
   const resetForm = () => {
     setText("");
     setTextLength(0);
-    setPostData({
+    setFormNewPostData({
       content: "",
       images: [],
       taggedUsers: [],
@@ -78,7 +75,7 @@ export const usePostForm = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify(postData),
+          body: JSON.stringify(formNewPostData),
         }
       );
       const data = await response.json();
@@ -103,10 +100,6 @@ export const usePostForm = () => {
     handleTextChange,
     minHeight,
     maxHeight,
-
-    // estado del post
-    postData,
-    setPostData,
 
     // funciones
     createPost,

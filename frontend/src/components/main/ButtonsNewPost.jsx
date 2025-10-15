@@ -13,7 +13,7 @@ export const ButtonsNewPost = ({ textLength, loading, handleSubmit }) => {
         show={showModal}
         onClose={() => setShowModal(false)}
       >
-        <AddIamgePost />
+        <AddIamgePost setShowModal={setShowModal} />
       </LayoutModal>
 
       {/* botones de acciones */}

@@ -1,12 +1,16 @@
-import React from "react";
 import { ButtonBase } from "@/UI/UiButtons";
 import { Link } from "react-router-dom";
 import { usePostForm } from "@/hooks/post/usePostForm";
 import { showToast } from "@/utils/toastConfig";
 import { formatUserDisplayName } from "@/utils/formatsFunctions";
 import { ButtonsNewPost } from "./ButtonsNewPost";
+import { useNewPostContext } from "@/contexts/post/useNewPostsContext";
+import { useState } from "react";
+import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 
 export const NewPost = ({ userAuthenticated, userData }) => {
+  const [currentIndexImage, setCurrentIndexImage] = useState(0);
+
   // hooks
   const {
     text,
@@ -19,12 +23,28 @@ export const NewPost = ({ userAuthenticated, userData }) => {
     textLength,
   } = usePostForm();
 
+  const { formNewPostData, setFormNewPostData } = useNewPostContext();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!text.trim()) {
       return showToast("El post no puede estar vacío", "⚠️");
     }
     await createPost();
+  };
+
+  // manejar siguiente imagen
+  const handleNextImage = () => {
+    setCurrentIndexImage((prev) => (prev + 1) % formNewPostData.images?.length);
+  };
+
+  // manejar anterior imagen
+  const handlePrevImage = () => {
+    setCurrentIndexImage(
+      (prev) =>
+        (prev - 1 + formNewPostData.images?.length) %
+        formNewPostData.images?.length
+    );
   };
 
   return (
@@ -53,6 +73,53 @@ export const NewPost = ({ userAuthenticated, userData }) => {
               }}
             />
           </div>
+
+          {formNewPostData.images.length > 0 && (
+            <div className="flex gap-3 px-3 h-82 items-center justify-center relative mb-3">
+              <img
+                src={formNewPostData.images[currentIndexImage]}
+                alt="image-new-post"
+                className="h-full object-contain rounded-lg"
+              />
+
+              <footer className="absolute bottom-5 flex gap-2">
+                <div className="flex gap-2 bg-black/50 rounded-full p-1 items-center backdrop-blur-sm">
+                  <button
+                    onClick={handlePrevImage}
+                    className="cursor-pointer hover:bg-gray-color/50 rounded-full p-1 duration-100"
+                  >
+                    <ChevronLeft size={15} />
+                  </button>
+                  <p className="text-white text-sm select-none">
+                    {currentIndexImage + 1}/{formNewPostData.images.length}
+                  </p>
+                  <button
+                    onClick={handleNextImage}
+                    className="cursor-pointer hover:bg-gray-color/50 rounded-full p-1 duration-100"
+                  >
+                    <ChevronRight size={15} />
+                  </button>
+                </div>
+
+                {/* boton eliminar */}
+                <div className="flex gap-2 bg-black/50 rounded-full p-1 items-center backdrop-blur-sm">
+                  <button
+                    onClick={() =>
+                      setFormNewPostData((prev) => ({
+                        ...prev,
+                        images: prev.images.filter(
+                          (_, index) => index !== currentIndexImage
+                        ),
+                      }))
+                    }
+                    className=" cursor-pointer hover:bg-gray-color/50 rounded-full p-1 duration-100"
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
+              </footer>
+            </div>
+          )}
 
           {/** botones de acciones
            * enviar post

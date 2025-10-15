@@ -109,7 +109,9 @@ export const AsideMainPage = ({
                   <h5 className="font-medium line-clamp-1">
                     {userData?.displayName}
                   </h5>
-                  <BadgeCheck size={17} className="text-sky-500" />
+                  {userData?.verified && (
+                    <BadgeCheck size={17} className="text-sky-500" />
+                  )}
                 </div>
                 <p className="text-gray-color text-sm line-clamp-1">
                   @{userData?.username}

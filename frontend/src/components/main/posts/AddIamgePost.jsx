@@ -1,10 +1,10 @@
-import { ImageUp, Plus, Trash2 } from "lucide-react";
+import { ImageUp, Loader2, Plus, Trash2 } from "lucide-react";
 import { ButtonBase } from "@/UI/UiButtons";
 import { useHandleAddImage } from "@/hooks/post/useHandleAddImage";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { showToast } from "@/utils/toastConfig";
 
-export const AddIamgePost = () => {
+export const AddIamgePost = ({ setShowModal }) => {
   const {
     handleNextImage,
     handlePrevImage,
@@ -14,11 +14,24 @@ export const AddIamgePost = () => {
     updateImagesPreview,
     handleDeleteImage,
     newImage,
+    handleUploadImg,
+    uploading,
+    acceptImage,
   } = useHandleAddImage();
+
+  const handleAcceptImage = () => {
+    acceptImage();
+    setShowModal(false);
+  };
 
   return (
     <main>
-      <div className="border-3 border-dashed border-gray-color/80 hover:border-light-color rounded-lg p-6 flex items-center justify-center py-15 group duration-150 cursor-pointer flex-col">
+      <div className="border-3 border-dashed border-gray-color/80 hover:border-light-color rounded-lg p-6 flex items-center justify-center py-15 group duration-150 cursor-pointer flex-col relative">
+        <input
+          type="file"
+          onChange={handleUploadImg}
+          className="bg-red-600 absolute top-0 left-0 w-full h-full cursor-pointer opacity-0"
+        />
         <ImageUp
           size={70}
           strokeWidth={1.5}
@@ -51,8 +64,7 @@ export const AddIamgePost = () => {
         <button
           className="border border-gray-color/50 hover:border-light-color rounded-full p-2 cursor-pointer duration-200 group "
           onClick={() => {
-            updateImagesPreview();
-            setNewImage("");
+            updateImagesPreview(newImage);
           }}
         >
           <Plus className="group-hover:text-light-color text-gray-color/50 duration-200" />
@@ -63,7 +75,12 @@ export const AddIamgePost = () => {
       <div className="h-[240px] relative">
         <div className="w-full h-full">
           {imagesPreview.length > 0 ? (
-            <div className="w-full h-full relative">
+            <div className="w-full h-full relative rounded-lg overflow-hidden">
+              {uploading && (
+                <div className="w-full h-full flex items-center justify-center absolute top-0 left-0 z-10 bg-dark-color/70 backdrop-blur-xs">
+                  <Loader2 className="animate-spin text-gray-color" size={28} />
+                </div>
+              )}
               <img
                 src={imagesPreview[currentImage]}
                 onError={() => {
@@ -92,7 +109,7 @@ export const AddIamgePost = () => {
             </div>
           ) : (
             <div className="w-full h-full flex items-center justify-center text-lg text-gray-color">
-              No hay imágenes
+              {uploading ? "Subiendo imagen..." : "No hay imágenes"}
             </div>
           )}
         </div>
@@ -115,7 +132,12 @@ export const AddIamgePost = () => {
       </div>
 
       {/* boton */}
-      <ButtonBase text="Aceptar" className="mt-6 text-lg py-2" />
+      <ButtonBase
+        text="Aceptar"
+        loading={uploading}
+        className="mt-6 text-lg py-2"
+        onClick={handleAcceptImage}
+      />
     </main>
   );
 };

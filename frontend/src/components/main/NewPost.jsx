@@ -1,12 +1,17 @@
-import React from "react";
-import { Image, Send, AtSign, Hash, Loader2 } from "lucide-react";
 import { ButtonBase } from "@/UI/UiButtons";
 import { Link } from "react-router-dom";
 import { usePostForm } from "@/hooks/post/usePostForm";
 import { showToast } from "@/utils/toastConfig";
 import { formatUserDisplayName } from "@/utils/formatsFunctions";
+import { ButtonsNewPost } from "./ButtonsNewPost";
+import { useNewPostContext } from "@/contexts/post/useNewPostsContext";
+import { useState } from "react";
+import { ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 
 export const NewPost = ({ userAuthenticated, userData }) => {
+  const [currentIndexImage, setCurrentIndexImage] = useState(0);
+
+  // hooks
   const {
     text,
     textareaRef,
@@ -18,12 +23,28 @@ export const NewPost = ({ userAuthenticated, userData }) => {
     textLength,
   } = usePostForm();
 
+  const { formNewPostData, setFormNewPostData } = useNewPostContext();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!text.trim()) {
       return showToast("El post no puede estar vacío", "⚠️");
     }
     await createPost();
+  };
+
+  // manejar siguiente imagen
+  const handleNextImage = () => {
+    setCurrentIndexImage((prev) => (prev + 1) % formNewPostData.images?.length);
+  };
+
+  // manejar anterior imagen
+  const handlePrevImage = () => {
+    setCurrentIndexImage(
+      (prev) =>
+        (prev - 1 + formNewPostData.images?.length) %
+        formNewPostData.images?.length
+    );
   };
 
   return (
@@ -33,8 +54,9 @@ export const NewPost = ({ userAuthenticated, userData }) => {
           <div className="flex items-center pl-4">
             <img
               src={userData?.avatarUrl}
-              alt=""
-              className="w-11 h-11 object-cover rounded-full mb-auto mt-4"
+              alt={userData?.displayName}
+              className="w-11 h-11 object-cover rounded-full mb-auto mt-4 user-select-none"
+              draggable={false}
             />
             <textarea
               ref={textareaRef}
@@ -51,37 +73,65 @@ export const NewPost = ({ userAuthenticated, userData }) => {
               }}
             />
           </div>
-          <div className="p-3 pt-0 flex justify-between items-center">
-            <div className="flex">
-              <button className="p-1 cursor-pointer text-gray-color/80 hover:text-light-color duration-150">
-                <Image size={20} />
-              </button>
-              <button className="p-1 cursor-pointer text-gray-color/80 hover:text-light-color duration-150">
-                <AtSign size={20} />
-              </button>
-              <button className="p-1 cursor-pointer text-gray-color/80 hover:text-light-color duration-150">
-                <Hash size={20} />
-              </button>
+
+          {formNewPostData.images.length > 0 && (
+            <div className="flex gap-3 px-3 h-82 items-center justify-center relative mb-3">
+              <img
+                src={formNewPostData.images[currentIndexImage]}
+                alt="image-new-post"
+                className="h-full object-contain rounded-lg"
+              />
+
+              <footer className="absolute bottom-5 flex gap-2">
+                <div className="flex gap-2 bg-black/50 rounded-full p-1 items-center backdrop-blur-sm">
+                  <button
+                    onClick={handlePrevImage}
+                    className="cursor-pointer hover:bg-gray-color/50 rounded-full p-1 duration-100"
+                  >
+                    <ChevronLeft size={15} />
+                  </button>
+                  <p className="text-white text-sm select-none">
+                    {currentIndexImage + 1}/{formNewPostData.images.length}
+                  </p>
+                  <button
+                    onClick={handleNextImage}
+                    className="cursor-pointer hover:bg-gray-color/50 rounded-full p-1 duration-100"
+                  >
+                    <ChevronRight size={15} />
+                  </button>
+                </div>
+
+                {/* boton eliminar */}
+                <div className="flex gap-2 bg-black/50 rounded-full p-1 items-center backdrop-blur-sm">
+                  <button
+                    onClick={() =>
+                      setFormNewPostData((prev) => ({
+                        ...prev,
+                        images: prev.images.filter(
+                          (_, index) => index !== currentIndexImage
+                        ),
+                      }))
+                    }
+                    className=" cursor-pointer hover:bg-gray-color/50 rounded-full p-1 duration-100"
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
+              </footer>
             </div>
-            <div className="flex items-center">
-              <span
-                style={{ color: textLength > 2000 ? "red" : "" }}
-                className="text-gray-color/80 text-xs mr-2"
-              >
-                {textLength}/2000
-              </span>
-              <button
-                className="p-1 cursor-pointer text-gray-color/80 hover:text-light-color duration-150"
-                onClick={handleSubmit}
-              >
-                {loading ? (
-                  <Loader2 className="animate-spin" size={20} />
-                ) : (
-                  <Send size={20} />
-                )}
-              </button>
-            </div>
-          </div>
+          )}
+
+          {/** botones de acciones
+           * enviar post
+           * agregar imagenes
+           * agregar hashtags
+           * agregar usuarios
+           */}
+          <ButtonsNewPost
+            textLength={textLength}
+            loading={loading}
+            handleSubmit={handleSubmit}
+          />
         </div>
       ) : (
         <div className="flex flex-col items-center py-6">

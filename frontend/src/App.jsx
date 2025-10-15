@@ -5,6 +5,7 @@ import { MainPage } from "./pages/main/MainPage";
 import { Toaster } from "react-hot-toast";
 import { UserProvider } from "./contexts/UserContexts";
 import { UserProfilePage } from "./pages/user/UserProfilePage";
+import { ComingSoon } from "./pages/general/ComingSoon";
 
 function App() {
   return (
@@ -26,6 +27,11 @@ function App() {
             <Route index element={<MainPage />} />
             <Route path="user/:userName" element={<UserProfilePage />} />
           </Route>
+
+          {/* Proximamente */}
+          <Route path="/mensajes" element={<ComingSoon />} />
+          <Route path="/posts" element={<ComingSoon />} />
+          <Route path="/tendencias" element={<ComingSoon />} />
 
           {/* Protected Routes */}
         </Routes>

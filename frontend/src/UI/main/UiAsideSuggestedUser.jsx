@@ -4,12 +4,11 @@ import { Link } from "react-router-dom";
 
 export const UiAsideSuggestedUser = ({ user }) => {
   return (
-    <Link
-      to={`/user/${user.username}`}
-      key={user.username}
-      className="flex gap-2 items-center"
-    >
-      <div className="flex gap-2 items-center group cursor-pointer w-full">
+    <div key={user.username} className="flex gap-2 items-center">
+      <Link
+        to={`/user/${user.username}`}
+        className="flex gap-2 items-center group cursor-pointer w-full"
+      >
         <img
           src={user.avatarUrl}
           className="w-11 aspect-square rounded-full select-none object-cover"
@@ -25,12 +24,12 @@ export const UiAsideSuggestedUser = ({ user }) => {
             @{user.username}
           </p>
         </div>
-      </div>
+      </Link>
       <div className="ml-auto">
         <button className="border select-none duration-150 px-2.5 py-0.5 rounded-full text-sm cursor-pointer hover:bg-light-color hover:text-dark-color font-medium">
           Seguir
         </button>
       </div>
-    </Link>
+    </div>
   );
 };

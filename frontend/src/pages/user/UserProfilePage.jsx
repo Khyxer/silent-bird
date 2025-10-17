@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useGetProfileUser } from "@/hooks/user/useGetProfileUser";
 import { useParams } from "react-router-dom";
 import { HeroProfileUser } from "@/components/user/HeroProfileUser";

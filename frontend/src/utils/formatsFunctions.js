@@ -3,11 +3,23 @@ export const formatNumberToK = (number) => {
     return number.toString();
   }
 
-  const abreviado = (number / 1000).toFixed(1);
+  if (number < 1000000) {
+    const abreviadoK = (number / 1000).toFixed(1);
 
-  return abreviado.endsWith(".0")
-    ? abreviado.slice(0, -2) + "k"
-    : abreviado + "k";
+    return abreviadoK.endsWith(".0")
+      ? abreviadoK.slice(0, -2) + "k"
+      : abreviadoK + "k";
+  }
+
+  if (number < 1000000000) {
+    const abreviadoM = (number / 1000000).toFixed(1);
+
+    return abreviadoM.endsWith(".0")
+      ? abreviadoM.slice(0, -2) + "M"
+      : abreviadoM + "M";
+  }
+
+  return number.toString();
 };
 
 export const formatTextFirstLetter = (text) => {

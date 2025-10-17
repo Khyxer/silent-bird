@@ -10,6 +10,8 @@ export const showToast = (message, icon = "✅") => {
       maxWidth: "500px",
       textAlign: "center",
     },
+    position: "bottom-right",
+    reverseOrder: true,
   });
 };
 
@@ -23,6 +25,8 @@ export const showErrorToast = (message, icon = "⚠️") => {
       maxWidth: "500px",
       textAlign: "center",
     },
+     position: "bottom-right",
+    reverseOrder: true,
   });
 };
 
@@ -36,6 +40,8 @@ export const showWarningToast = (message, icon = "⚠️") => {
       maxWidth: "500px",
       textAlign: "center",
     },
+     position: "bottom-right",
+    reverseOrder: true,
   });
 };
 
@@ -49,5 +55,7 @@ export const showCriticalErrorToast = (message, icon = "⚠️") => {
       maxWidth: "500px",
       textAlign: "center",
     },
+     position: "bottom-right",
+    reverseOrder: true,
   });
 };

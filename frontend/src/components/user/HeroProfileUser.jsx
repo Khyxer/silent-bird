@@ -1,13 +1,41 @@
-import React from "react";
 import { ButtonBase } from "@/UI/UiButtons";
 import { Settings, Verified } from "lucide-react";
 import { HeroProfileUserLoader } from "@/components/loaders/user/HeroProfileUserLoader";
+import { useUser } from "@/contexts/UserContexts";
+import { formatNumberToK } from "@/utils/formatsFunctions";
+import { useFollowUser } from "@/hooks/user/useFollowUser";
 
 export const HeroProfileUser = ({ profileUser, currentUser, loadingUser }) => {
   //   console.log(profileUser);
+  const { userData } = useUser();
+
+  const { followUser, loadingFollow } = useFollowUser();
+
+  const buttonData = () => {
+    if (profileUser?.followers.includes(userData?._id)) {
+      return {
+        text: "Dejar de seguir",
+        unfollow: true,
+      };
+    } else {
+      return {
+        text: "Seguir",
+        unfollow: false,
+      };
+    }
+  };
+
+  const dataMap = {
+    followers: profileUser?.followers.length,
+    following: profileUser?.following.length,
+    likes: profileUser?.likes,
+    posts: profileUser?.posts,
+  };
+
   if (loadingUser) {
     return <HeroProfileUserLoader />;
   }
+
   return (
     //contenedor principal
     <main className="border border-gray-color/50 rounded-lg overflow-hidden">
@@ -31,17 +59,19 @@ export const HeroProfileUser = ({ profileUser, currentUser, loadingUser }) => {
           <img
             src={profileUser?.avatarUrl}
             alt={profileUser?.avatarUrl}
-            className="w-28 h-28 rounded-full z-10 ring-2 ring-light-color/90 object-cover select-none"
+            className="w-28 h-28 rounded-full z-10 ring-2 ring-light-color/90 object-cover select-none bg-dark-color"
           />
         </div>
       </header>
       {/* Contenido del perfil con nombre, usuario y botones */}
-      <footer className="p-6">
+      <footer className="p-6 pb-3">
         <div className="flex items-center justify-between">
           {/* Información del usuario como nombre, usuario y verificado */}
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-bold text-2xl">{profileUser?.displayName}</h1>
+              <h1 className="font-bold text-2xl ">
+                {profileUser?.displayName}
+              </h1>
               <span className=" text-lg text-sky-500">
                 {profileUser?.verified ? <Verified size={27} /> : ""}
               </span>
@@ -51,6 +81,7 @@ export const HeroProfileUser = ({ profileUser, currentUser, loadingUser }) => {
             </div>
             <p className="text-gray-color text-lg">@{profileUser?.username}</p>
           </div>
+
           {/* Botones de seguir y editar perfil si es el usuario actual */}
           {currentUser ? (
             <div className="flex items-center gap-2">
@@ -60,10 +91,33 @@ export const HeroProfileUser = ({ profileUser, currentUser, loadingUser }) => {
               </button>
             </div>
           ) : (
-            <ButtonBase text="Seguir" className="!w-fit px-5" />
+            <ButtonBase
+              text={buttonData().text}
+              onClick={() => {
+                followUser(profileUser?.username, buttonData().unfollow);
+              }}
+              className="!w-fit px-5"
+              disabled={loadingFollow}
+            />
           )}
         </div>
       </footer>
+
+      {/* data */}
+      <div className="p-6 pt-3">
+        <div className="flex gap-9 w-full border-t border-gray-color/50 pt-6">
+          {Object.entries(dataMap).map(([key, value]) => (
+            <div key={key} className=" flex flex-col items-center">
+              <p className="text-2xl font-black leading-6">
+                {formatNumberToK(value)}
+              </p>
+              <span className="text-sm text-gray-color">
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
     </main>
   );
 };

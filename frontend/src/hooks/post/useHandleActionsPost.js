@@ -1,11 +1,20 @@
 import { useState } from "react";
+import { showToast } from "@/utils/toastConfig";
 
+//cambiar el nombre por algo que tenga que ver con dar like al post porque no es un action general
 export const useHandleActionsPost = ({ post, userData }) => {
   // dar like a un post y cmbiar el color del corazón
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(post.likes.includes(userData?._id));
 
+  const token = localStorage.getItem("token");
+
   const handleLikePost = async () => {
+    if (!token) {
+      showToast("Inicia sesión para dar like", "🗝️");
+      return;
+    }
+    
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/post/like`,
@@ -13,7 +22,7 @@ export const useHandleActionsPost = ({ post, userData }) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ postId: post._id }),
         }

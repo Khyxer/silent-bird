@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
     },
     avatarUrl: {
       type: String,
-      default: "https://i.ibb.co/RpCVFbtX/default-avatar-user.webp",
+      default: "https://i.ibb.co/XksgJHVV/default.webp",
     },
     bannerUrl: {
       type: String,

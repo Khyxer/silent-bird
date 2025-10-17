@@ -25,6 +25,8 @@ export const AsideMainPage = ({
     fetchUsers();
   }, []);
 
+  console.log(users);
+
   const tendencias = [
     {
       hashtag: "#MeguminOutInAllProjects",
@@ -54,15 +56,18 @@ export const AsideMainPage = ({
 
         {/* lista de las cuentas sugeridas con la ui de carga */}
         <ul className="space-y-4">
+          {/* ========= Si esta cargando */}
           {loading ? (
             new Array(3)
               .fill(0)
               .map((_, index) => <AsideMainPageLoaders key={index} />)
-          ) : users.length > 0 ? (
+          ) : // ========= Si todo salio bien Mostrar los usuarios
+          users.length > 0 ? (
             users.map((user) => (
               <UiAsideSuggestedUser key={user.username} user={user} />
             ))
           ) : (
+            // ======== si no hay usuarios
             <p className="text-center text-gray-color text-lg font-medium">
               Parece que no hay usuarios que puedan interesarte
               <Meh className="mx-auto mt-2" size={40} strokeWidth={1.5} />
@@ -93,7 +98,7 @@ export const AsideMainPage = ({
       {/* usuario */}
       {userAuthenticated ? (
         <footer className="border border-gray-color/50 p-4 rounded-xl w-full flex gap-4 items-center mt-auto">
-          <Link
+          {/* <Link
             to={`/user/${userData?.username}`}
             className="flex gap-2 items-center"
           >
@@ -104,7 +109,7 @@ export const AsideMainPage = ({
                 draggable={false}
                 alt="avatar"
               />
-              <div className="flex flex-col w-full max-w-[185px] ">
+              <div className="flex flex-col w-full max-w-[180px] overflow-hidden whitespace-nowrap text-ellipsis">
                 <div className="flex gap-1 items-center group-hover:underline">
                   <h5 className="font-medium line-clamp-1">
                     {userData?.displayName}
@@ -119,16 +124,49 @@ export const AsideMainPage = ({
               </div>
             </div>
           </Link>
-          <div className="ml-auto gap-2 flex items-center">
-            <button className="border border-transparent hover:border-light-color rounded-full p-2 cursor-pointer duration-200 group">
-              <Settings className="hover:text-light-color text-gray-color duration-200 group-hover:text-light-color" />
-            </button>
-            <button
-              onClick={() => handleLogOut()}
-              className="border border-transparent hover:border-light-color rounded-full p-2 cursor-pointer duration-200 group"
+          <button
+            onClick={() => handleLogOut()}
+            className="border border-transparent hover:border-light-color rounded-full p-2 cursor-pointer duration-200 group"
+          >
+            <LogOutIcon className="hover:text-light-color text-gray-color duration-200 group-hover:text-light-color" />
+          </button> */}
+
+          <div
+            key={userData?.username}
+            className="flex gap-2 items-center w-full"
+          >
+            <Link
+              to={`/user/${userData?.username}`}
+              className="flex gap-2 items-center group cursor-pointer w-full"
             >
-              <LogOutIcon className="hover:text-light-color text-gray-color duration-200 group-hover:text-light-color" />
-            </button>
+              <img
+                src={userData?.avatarUrl}
+                className="w-11 aspect-square rounded-full select-none object-cover"
+                draggable={false}
+                alt="avatar"
+              />
+              <div className="flex flex-col w-full max-w-[185px] ">
+                <div className="flex gap-1 items-center group-hover:underline">
+                  <h5 className="font-medium line-clamp-1">
+                    {userData?.displayName}
+                  </h5>
+                  {userData?.verified && (
+                    <Verified size={17} className="text-sky-500" />
+                  )}
+                </div>
+                <p className="text-gray-color text-sm line-clamp-1">
+                  @{userData?.username}
+                </p>
+              </div>
+            </Link>
+            <div className="ml-auto">
+              <button
+                onClick={() => handleLogOut()}
+                className="border border-transparent hover:border-light-color rounded-full p-2 cursor-pointer duration-200 group"
+              >
+                <LogOutIcon className="hover:text-light-color text-gray-color duration-200 group-hover:text-light-color" />
+              </button>
+            </div>
           </div>
         </footer>
       ) : (

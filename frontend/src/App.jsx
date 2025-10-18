@@ -30,7 +30,7 @@ function App() {
             {/* Pagina de perfil del usuario */}
             <Route path="user/:userName" element={<UserProfilePage />} />
             {/* Pagina de buscar usuario */}
-            <Route path="search-user" element={<SearchUserPage />} />
+            <Route path="search-users" element={<SearchUserPage />} />
           </Route>
 
           {/* Proximamente */}

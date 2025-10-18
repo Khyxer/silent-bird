@@ -6,6 +6,8 @@ export const getSuggestedAccountsController = async (req, res) => {
   try {
     const userId = req.query.userId;
 
+    const { limitUsers } = req.query;
+
     const filters = userId
       ? {
           // followers: { $ne: userId }, // excluye la cuenta si el usuario la sigue
@@ -15,8 +17,10 @@ export const getSuggestedAccountsController = async (req, res) => {
 
     const accounts = await User.find(filters)
       .sort({ followers: -1 })
-      .limit(4)
-      .select("avatarUrl displayName username verified followers following");
+      .limit(limitUsers)
+      .select(
+        "avatarUrl bannerUrl displayName username verified followers following"
+      );
     res.json({
       success: true,
       data: accounts,
@@ -76,6 +80,33 @@ export const getUserProfileController = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error al obtener perfil de usuario",
+      error: error.message,
+    });
+  }
+};
+
+// buscar usuarios
+export const searchUserController = async (req, res) => {
+  try {
+    // obtener el nombre de usuario a buscar
+    const { partUserName } = req.query;
+
+    const accounts = await User.find({
+      username: { $regex: partUserName, $options: "i" }, //buscar los que coincidan e ignore mayusculas y minusculas
+    })
+      .sort({ followers: -1 })
+      .select(
+        "avatarUrl bannerUrl displayName username verified followers following"
+      );
+    res.json({
+      success: true,
+      data: accounts,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Error al buscar usuarios",
       error: error.message,
     });
   }

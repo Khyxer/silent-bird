@@ -23,7 +23,7 @@ export const AsideMainPage = ({
   const { users, fetchUsers, loading } = useCuentasSugeridas();
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(4);
   }, []);
 
   console.log(users);
@@ -99,39 +99,6 @@ export const AsideMainPage = ({
       {/* usuario */}
       {userAuthenticated ? (
         <footer className="border border-gray-color/50 p-4 rounded-xl w-full flex gap-4 items-center mt-auto">
-          {/* <Link
-            to={`/user/${userData?.username}`}
-            className="flex gap-2 items-center"
-          >
-            <div className="flex gap-2 items-center group cursor-pointer">
-              <img
-                src={userData?.avatarUrl}
-                className="w-11 aspect-square rounded-full select-none object-cover"
-                draggable={false}
-                alt="avatar"
-              />
-              <div className="flex flex-col w-full max-w-[180px] overflow-hidden whitespace-nowrap text-ellipsis">
-                <div className="flex gap-1 items-center group-hover:underline">
-                  <h5 className="font-medium line-clamp-1">
-                    {userData?.displayName}
-                  </h5>
-                  {userData?.verified && (
-                    <BadgeCheck size={17} className="text-sky-500" />
-                  )}
-                </div>
-                <p className="text-gray-color text-sm line-clamp-1">
-                  @{userData?.username}
-                </p>
-              </div>
-            </div>
-          </Link>
-          <button
-            onClick={() => handleLogOut()}
-            className="border border-transparent hover:border-light-color rounded-full p-2 cursor-pointer duration-200 group"
-          >
-            <LogOutIcon className="hover:text-light-color text-gray-color duration-200 group-hover:text-light-color" />
-          </button> */}
-
           <div
             key={userData?.username}
             className="flex gap-2 items-center w-full"

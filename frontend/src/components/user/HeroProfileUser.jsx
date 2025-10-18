@@ -5,10 +5,11 @@ import { useUser } from "@/contexts/UserContexts";
 import { formatNumberToK } from "@/utils/formatsFunctions";
 import { useFollowUser } from "@/hooks/user/useFollowUser";
 import { useEffect, useState } from "react";
+import { showToast } from "@/utils/toastConfig";
 
 export const HeroProfileUser = ({ profileUser, currentUser, loadingUser }) => {
   //   console.log(profileUser);
-  const { userData } = useUser();
+  const { userData, userAuthenticated } = useUser();
 
   const [followContent, setFollowContent] = useState({
     text: "Seguir",
@@ -23,6 +24,12 @@ export const HeroProfileUser = ({ profileUser, currentUser, loadingUser }) => {
 
   //cambiar el texto del botón y su funcion para seguir o dejar de seguir
   const updateTempFollowData = () => {
+    //primero verificar si esta autenticado
+    if (!userAuthenticated) {
+      showToast("Debes iniciar sesión para seguir a alguien", "🗝️");
+      return;
+    }
+
     if (followContent.text === "Seguir") {
       setFollowContent({
         text: "Dejar de seguir",

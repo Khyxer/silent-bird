@@ -35,7 +35,9 @@ export const SearchUserPage = () => {
       <header className="pb-6 flex flex-col gap-3">
         <div className="flex items-center gap-2 justify-center">
           <Search />
-          <h1 className="text-center text-2xl font-semibold">Buscar usuarios</h1>
+          <h1 className="text-center text-2xl font-semibold">
+            Buscar usuarios
+          </h1>
         </div>
         <div className="flex items-center gap-2 h-10">
           <p className="text-2xl font-bold text-gray-color select-none">@</p>

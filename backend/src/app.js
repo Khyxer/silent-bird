@@ -8,6 +8,7 @@ import cors from "cors";
 import userRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import usersAccountsRoutes from "./routes/usersAccounts.routes.js";
+import followRoutes from "./routes/follow.routes.js";
 
 // variables de entorno
 dotenv.config();
@@ -40,6 +41,9 @@ app.use("/api", postRoutes);
 
 // rutas de sugerencias de cuentas
 app.use("/api", usersAccountsRoutes);
+
+// rutas de seguidores
+app.use("/api", followRoutes);
 
 // ====== servidor ======
 

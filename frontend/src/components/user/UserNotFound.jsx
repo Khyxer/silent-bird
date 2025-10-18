@@ -1,5 +1,4 @@
 import { SearchX } from "lucide-react";
-import React from "react";
 
 export const UserNotFound = () => {
   return (

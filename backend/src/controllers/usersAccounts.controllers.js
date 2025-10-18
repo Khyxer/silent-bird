@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import Post from "../models/post.model.js";
 
 // cuentas sugeridas
 export const getSuggestedAccountsController = async (req, res) => {
@@ -7,7 +8,7 @@ export const getSuggestedAccountsController = async (req, res) => {
 
     const filters = userId
       ? {
-          followers: { $ne: userId },
+          // followers: { $ne: userId }, // excluye la cuenta si el usuario la sigue
           _id: { $ne: userId },
         }
       : {};
@@ -15,7 +16,7 @@ export const getSuggestedAccountsController = async (req, res) => {
     const accounts = await User.find(filters)
       .sort({ followers: -1 })
       .limit(4)
-      .select("avatarUrl displayName username verified");
+      .select("avatarUrl displayName username verified followers following");
     res.json({
       success: true,
       data: accounts,
@@ -37,9 +38,38 @@ export const getUserProfileController = async (req, res) => {
       "-password"
     );
 
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Usuario no encontrado" });
+    }
+
+    // Convertir a objeto plano
+    const userObj = user.toObject();
+
+    // likes totales
+    const totalLikesAggregation = await Post.aggregate([
+      { $match: { userId: user._id } },
+      {
+        $group: {
+          _id: null,
+          totalLikes: { $sum: { $size: "$likes" } },
+        },
+      },
+    ]);
+
+    const totalLikes = totalLikesAggregation[0]?.totalLikes || 0;
+
+    //posts
+    const totalPosts = await Post.countDocuments({ userId: user._id });
+
+    // Agregar likes al objeto plano
+    userObj.likes = totalLikes;
+    userObj.posts = totalPosts;
+
     res.json({
       success: true,
-      data: user,
+      data: userObj,
     });
   } catch (error) {
     console.error(error);

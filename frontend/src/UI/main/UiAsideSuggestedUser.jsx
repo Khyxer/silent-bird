@@ -1,8 +1,25 @@
-import React from "react";
 import { Verified } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useUser } from "@/contexts/UserContexts";
+import { useState } from "react";
+import { useFollowUser } from "@/hooks/user/useFollowUser";
+import { useEffect } from "react";
 
 export const UiAsideSuggestedUser = ({ user }) => {
+  const { userData } = useUser();
+
+  const [isFollower, setIsFollower] = useState(false);
+
+  const { followUser, loadingFollow } = useFollowUser();
+
+  useEffect(() => {
+    if (user.followers.includes(userData?._id)) {
+      setIsFollower(true);
+    } else {
+      setIsFollower(false);
+    }
+  }, [user, userData]);
+
   return (
     <div key={user.username} className="flex gap-2 items-center">
       <Link
@@ -26,9 +43,22 @@ export const UiAsideSuggestedUser = ({ user }) => {
         </div>
       </Link>
       <div className="ml-auto">
-        <button className="border select-none duration-150 px-2.5 py-0.5 rounded-full text-sm cursor-pointer hover:bg-light-color hover:text-dark-color font-medium">
-          Seguir
-        </button>
+        {isFollower ? (
+          <button className="border select-none duration-150 px-2.5 py-0.5 rounded-full text-sm font-medium">
+            Siguiendo
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              followUser(user.username, false);
+              setIsFollower(true);
+            }}
+            loading={loadingFollow}
+            className="border select-none duration-150 px-2.5 py-0.5 rounded-full text-sm cursor-pointer hover:bg-light-color hover:text-dark-color font-medium"
+          >
+            Seguir
+          </button>
+        )}
       </div>
     </div>
   );

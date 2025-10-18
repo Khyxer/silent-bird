@@ -20,7 +20,7 @@ export const usePostForm = () => {
   // actualizar postData cuando cambie el texto
   useEffect(() => {
     setFormNewPostData((prev) => ({ ...prev, content: text }));
-    console.log(formNewPostData);
+    // console.log(formNewPostData);
   }, [text]);
 
   // ajustar altura del textarea

@@ -6,6 +6,7 @@ import {
   Settings,
   TrendingUp,
   Users,
+  Verified,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ButtonBase } from "@/UI/UiButtons";

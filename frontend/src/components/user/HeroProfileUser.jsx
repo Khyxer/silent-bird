@@ -4,35 +4,69 @@ import { HeroProfileUserLoader } from "@/components/loaders/user/HeroProfileUser
 import { useUser } from "@/contexts/UserContexts";
 import { formatNumberToK } from "@/utils/formatsFunctions";
 import { useFollowUser } from "@/hooks/user/useFollowUser";
+import { useEffect, useState } from "react";
 
 export const HeroProfileUser = ({ profileUser, currentUser, loadingUser }) => {
   //   console.log(profileUser);
   const { userData } = useUser();
 
+  const [followContent, setFollowContent] = useState({
+    text: "Seguir",
+    unfollow: false,
+  });
+
   const { followUser, loadingFollow } = useFollowUser();
 
-  const buttonData = () => {
-    if (profileUser?.followers.includes(userData?._id)) {
-      return {
+  const [followCount, setFollowCount] = useState(0);
+
+  const [baseLoading, setBaseLoading] = useState(true);
+
+  //cambiar el texto del botón y su funcion para seguir o dejar de seguir
+  const updateTempFollowData = () => {
+    if (followContent.text === "Seguir") {
+      setFollowContent({
         text: "Dejar de seguir",
         unfollow: true,
-      };
+      });
+      setFollowCount(followCount + 1);
     } else {
-      return {
+      setFollowContent({
         text: "Seguir",
         unfollow: false,
-      };
+      });
+      setFollowCount(followCount - 1);
     }
   };
 
+  useEffect(() => {
+    if (profileUser?.followers.includes(userData?._id)) {
+      setFollowContent({
+        text: "Dejar de seguir",
+        unfollow: true,
+      });
+    } else {
+      setFollowContent({
+        text: "Seguir",
+        unfollow: false,
+      });
+    }
+    //actualizar el numero de seguidores
+    if (profileUser?.followers) {
+      setFollowCount(profileUser.followers.length);
+    }
+
+    //solo al cargar todo
+    setBaseLoading(false);
+  }, [profileUser, userData]);
+
   const dataMap = {
-    followers: profileUser?.followers.length,
+    followers: Number(followCount),
     following: profileUser?.following.length,
     likes: profileUser?.likes,
     posts: profileUser?.posts,
   };
 
-  if (loadingUser) {
+  if (loadingUser || baseLoading) {
     return <HeroProfileUserLoader />;
   }
 
@@ -92,12 +126,14 @@ export const HeroProfileUser = ({ profileUser, currentUser, loadingUser }) => {
             </div>
           ) : (
             <ButtonBase
-              text={buttonData().text}
+              text={followContent.text}
               onClick={() => {
-                followUser(profileUser?.username, buttonData().unfollow);
+                followUser(profileUser?.username, followContent.unfollow);
+                // console.log(followContent.unfollow);
+                updateTempFollowData();
               }}
               className="!w-fit px-5"
-              disabled={loadingFollow}
+              loading={loadingFollow}
             />
           )}
         </div>

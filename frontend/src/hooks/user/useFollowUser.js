@@ -20,11 +20,11 @@ export const useFollowUser = () => {
         }
       );
       const data = await response.json();
-      console.log(data);
-      console.log(response.status);
+      // console.log(data);
+      // console.log(response.status);
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }

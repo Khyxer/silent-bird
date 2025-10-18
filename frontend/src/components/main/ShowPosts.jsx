@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { useGetPosts } from "@/hooks/post/useGetPosts";
 import { CardPost } from "./CardPost";
-import { Loader2 } from "lucide-react";
+import { SimpleLoader } from "@/components/loaders/SimpleLoader";
 
 export const ShowPosts = () => {
   const { dataPosts, fetchPosts, loading } = useGetPosts();
@@ -13,9 +13,7 @@ export const ShowPosts = () => {
 
   if (loading)
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <Loader2 size={40} className="animate-spin text-gray-color" />
-      </div>
+      <SimpleLoader />
     );
 
   return (

@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { UserProvider } from "./contexts/UserContexts";
 import { UserProfilePage } from "./pages/user/UserProfilePage";
 import { ComingSoon } from "./pages/general/ComingSoon";
+import { SearchUserPage } from "./pages/user/SearchUserPage";
 
 function App() {
   return (
@@ -22,10 +23,14 @@ function App() {
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/auth/register" element={<AuthPage />} />
 
-          {/* Rutas principales */}
+          {/* Rutas principales con el layout base */}
           <Route path="/" element={<MainPageLayout />}>
+            {/* Pagina principal */}
             <Route index element={<MainPage />} />
+            {/* Pagina de perfil del usuario */}
             <Route path="user/:userName" element={<UserProfilePage />} />
+            {/* Pagina de buscar usuario */}
+            <Route path="search-user" element={<SearchUserPage />} />
           </Route>
 
           {/* Proximamente */}

@@ -4,13 +4,15 @@ import { useUser } from "@/contexts/UserContexts";
 import { useState } from "react";
 import { useFollowUser } from "@/hooks/user/useFollowUser";
 import { useEffect } from "react";
+import { showToast } from "@/utils/toastConfig";
+import { ButtonBase } from "../UiButtons";
 
 export const UiAsideSuggestedUser = ({ user }) => {
-  const { userData } = useUser();
+  const { userData, userAuthenticated } = useUser();
 
   const [isFollower, setIsFollower] = useState(false);
 
-  const { followUser, loadingFollow } = useFollowUser();
+  const { followUser } = useFollowUser();
 
   useEffect(() => {
     if (user.followers.includes(userData?._id)) {
@@ -48,16 +50,19 @@ export const UiAsideSuggestedUser = ({ user }) => {
             Siguiendo
           </button>
         ) : (
-          <button
+          <ButtonBase
             onClick={() => {
+              if (!userAuthenticated) {
+                showToast("Debes iniciar sesión para seguir a alguien", "🗝️");
+                return;
+              }
               followUser(user.username, false);
               setIsFollower(true);
             }}
-            loading={loadingFollow}
-            className="border select-none duration-150 px-2.5 py-0.5 rounded-full text-sm cursor-pointer hover:bg-light-color hover:text-dark-color font-medium"
-          >
-            Seguir
-          </button>
+            className="border !select-none !duration-150 !px-2.5 !py-0.5 !text-sm !font-medium"
+            text="Seguir"
+            loading={isFollower}
+          />
         )}
       </div>
     </div>

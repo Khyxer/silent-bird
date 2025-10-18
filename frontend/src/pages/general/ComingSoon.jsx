@@ -7,7 +7,7 @@ export const ComingSoon = () => {
     <div className="flex flex-col items-center justify-center h-screen text-white">
       <img src={imageComingSoon} alt="coming soon" className="w-92" />
       <h1 className="text-4xl font-bold text-center">
-        Estamos trabajando en esta sección <br />
+        Estoy trabajando en esta sección <br />
         ¡Vuelve pronto!
       </h1>
 

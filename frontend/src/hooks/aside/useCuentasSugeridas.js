@@ -8,16 +8,20 @@ export const useCuentasSugeridas = () => {
 
   // console.log(userData);
 
-  const fetchUsers = async () => {
+  /**
+   *  Fetch para conseguir los usuarios sugeridos
+   * @param {Number} limitUsers 
+   */
+  const fetchUsers = async (limitUsers) => {
     try {
       setLoading(true);
 
       //url base
-      let url = `${import.meta.env.VITE_API_URL}/users/suggested-accounts`;
+      let url = `${import.meta.env.VITE_API_URL}/users/suggested-accounts?limitUsers=${limitUsers}`; //limite de 4 cuentas
 
       //agrega el query param si existe userData._id para que no se rompa esta mrda
       if (userData?._id) {
-        url += `?userId=${userData._id}`;
+        url += `&userId=${userData._id}`;
       }
 
       //pasar la url al fetch

@@ -30,7 +30,7 @@ export const HeaderMainPage = () => {
     {
       icon: Users,
       label: "Usuarios",
-      link: "/usuarios",
+      link: "/search-user",
     },
     {
       icon: MessageCircle,

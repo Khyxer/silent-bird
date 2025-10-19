@@ -10,7 +10,7 @@ export const SearchUserCard = ({ user }) => {
       <img
         src={user.avatarUrl}
         alt={user.displayName}
-        className="w-16 h-16 rounded-full select-none"
+        className="w-16 h-16 rounded-full select-none object-cover"
         draggable={false}
       />
       <div>

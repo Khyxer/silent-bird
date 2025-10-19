@@ -9,6 +9,7 @@ import userRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import usersAccountsRoutes from "./routes/usersAccounts.routes.js";
 import followRoutes from "./routes/follow.routes.js";
+import messageRoutes from "./routes/message.routes.js";
 
 // variables de entorno
 dotenv.config();
@@ -44,6 +45,9 @@ app.use("/api", usersAccountsRoutes);
 
 // rutas de seguidores
 app.use("/api", followRoutes);
+
+// rutas de mensajes
+app.use("/api", messageRoutes);
 
 // ====== servidor ======
 

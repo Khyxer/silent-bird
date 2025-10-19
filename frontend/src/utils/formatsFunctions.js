@@ -34,3 +34,18 @@ export const formatUserDisplayName = (text) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 };
+
+export const formatTimestamp = (timestamp) => {
+  const date = new Date(timestamp);
+  const now = new Date();
+
+  const isToday = date.toDateString() === now.toDateString();
+
+  if (isToday) {
+    // Formato HH:mm
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } else {
+    // Formato dd/mm/yyyy
+    return date.toLocaleDateString('es-ES');
+  }
+}

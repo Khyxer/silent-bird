@@ -7,6 +7,9 @@ import { UserProvider } from "./contexts/UserContexts";
 import { UserProfilePage } from "./pages/user/UserProfilePage";
 import { ComingSoon } from "./pages/general/ComingSoon";
 import { SearchUserPage } from "./pages/user/SearchUserPage";
+import { MessagesLayout } from "./layouts/MessagesLayout";
+import { MessagesMainContainer } from "./components/messages/MessagesMainContainer";
+import { StartToChat } from "./components/messages/StartToChat";
 
 function App() {
   return (
@@ -33,8 +36,14 @@ function App() {
             <Route path="search-users" element={<SearchUserPage />} />
           </Route>
 
+          {/* Rutas de mensajes */}
+          <Route path="/mensajes" element={<MessagesLayout />}>
+            {/* Pagina de mensajes */}
+            <Route index element={<StartToChat />} /> {/* pagina inicial */}
+            <Route path=":userName" element={<MessagesMainContainer />} /> {/* pagina de mensajes por usuario */}
+          </Route>
+
           {/* Proximamente */}
-          <Route path="/mensajes" element={<ComingSoon />} />
           <Route path="/posts" element={<ComingSoon />} />
           <Route path="/tendencias" element={<ComingSoon />} />
 

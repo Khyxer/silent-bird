@@ -1,4 +1,3 @@
-import React from "react";
 import { HeaderMainPage } from "@/components/main/HeaderMainPage";
 import { useUser } from "@/contexts/UserContexts";
 import { Outlet } from "react-router-dom";

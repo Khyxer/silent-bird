@@ -72,10 +72,17 @@ export const SearchUserPage = () => {
       <div className="pt-6 border-t border-gray-color/50">
         {loadingUserSearch ? (
           <SimpleLoader />
-        ) : (
+        ) : usersFinded.length > 0 ? (
           usersFinded.map((user) => (
             <SearchUserCard key={user._id} user={user} />
           ))
+        ) : (
+          <p className="text-center text-gray-color">
+            No se encontraron resultados para{" "}
+            <span className="font-semibold text-light-color">
+              "{userToFind}"
+            </span>
+          </p>
         )}
       </div>
     </main>
